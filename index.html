@@ -1,1 +1,506 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trần Sơn Tùng — Unity Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4f0;
+  --white: #ffffff;
+  --dark: #111110;
+  --dark2: #1e1d1b;
+  --border: #e2e0da;
+  --accent: #1a6b3c;
+  --accent-light: #e8f5ee;
+  --accent-mid: #2d9e5f;
+  --amber: #b45309;
+  --amber-light: #fef3c7;
+  --purple-light: #ede9fe;
+  --muted: #78716c;
+  --muted2: #a8a29e;
+  --text: #1c1917;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
+/* NAV */
+nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(245,244,240,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 60px; height: 60px; display: flex; justify-content: space-between; align-items: center; }
+.nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: var(--dark); letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+.nav-dot { width: 8px; height: 8px; background: var(--accent-mid); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+.nav-links { display: flex; list-style: none; gap: 4px; }
+.nav-links a { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: var(--dark); text-decoration: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--white); transition: all 0.15s; letter-spacing: 0.3px; }
+.nav-links a:hover { color: var(--accent); border-color: var(--accent-mid); background: var(--accent-light); }
+
+/* HERO */
+#hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 400px; align-items: center; padding: 80px 60px 60px; gap: 60px; position: relative; overflow: hidden; }
+#hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(45,158,95,0.07) 0%, transparent 60%); pointer-events: none; }
+.hero-left { position: relative; z-index: 1; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; background: var(--accent-light); border: 1px solid rgba(26,107,60,0.2); padding: 6px 14px; border-radius: 4px; margin-bottom: 28px; }
+.hero-eyebrow-dot { width: 6px; height: 6px; background: var(--accent-mid); border-radius: 50%; animation: pulse 1.5s infinite; }
+h1.hero-name { font-size: clamp(44px, 5.5vw, 72px); font-weight: 800; line-height: 1.05; letter-spacing: -2.5px; color: var(--dark); margin-bottom: 12px; }
+h1.hero-name em { font-style: normal; color: var(--accent); }
+.hero-title-bar { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.hero-divider { width: 40px; height: 2px; background: var(--accent-mid); }
+.hero-role-text { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--muted); }
+.hero-desc { font-size: 19px; line-height: 1.75; color: var(--muted); max-width: 520px; margin-bottom: 44px; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--dark); color: white; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.2s; border: 2px solid var(--dark); }
+.btn-primary:hover { background: var(--dark2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: transparent; color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; border: 2px solid var(--border); transition: all 0.2s; }
+.btn-secondary:hover { border-color: var(--dark); transform: translateY(-1px); }
+
+/* Stats Card */
+.hero-right { position: relative; z-index: 1; }
+.stats-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.stats-card-title { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted2); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+.stat-row { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.stat-row:last-child { border-bottom: none; }
+.stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.stat-icon.green { background: var(--accent-light); }
+.stat-icon.amber { background: var(--amber-light); }
+.stat-icon.purple { background: var(--purple-light); }
+.stat-icon.gray { background: #f0f0ee; }
+.stat-value { font-size: 20px; font-weight: 800; color: var(--dark); line-height: 1; margin-bottom: 2px; }
+.stat-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+/* SECTION */
+section { padding: 100px 60px; }
+.section-header { margin-bottom: 56px; }
+.section-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+.section-title { font-size: clamp(28px, 3.5vw, 42px); font-weight: 800; letter-spacing: -1.5px; color: var(--dark); line-height: 1.1; }
+.section-title span { color: var(--muted2); }
+
+/* PROJECTS */
+#projects { background: var(--dark); }
+#projects .section-eyebrow { color: var(--accent-mid); }
+#projects .section-title { color: white; }
+#projects .section-title span { color: white; }
+#experience .section-title { color: var(--dark); }
+#experience .section-title span { color: var(--dark); }
+.projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #222; border: 1px solid #222; border-radius: 16px; overflow: hidden; }
+.project-card { background: #1a1917; padding: 36px; transition: background 0.2s; }
+.project-card:hover { background: #1e1d1b; }
+.project-card.featured { grid-column: span 2; background: #141412; }
+.project-card.featured:hover { background: #181715; }
+.project-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.project-index { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #444; letter-spacing: 2px; }
+.project-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 4px 10px; border-radius: 4px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+.badge-green { background: rgba(45,158,95,0.15); color: #4ade80; border: 1px solid rgba(45,158,95,0.25); }
+.badge-amber { background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+.badge-purple { background: rgba(124,58,237,0.12); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+.badge-blue { background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+.project-name { font-size: 20px; font-weight: 700; color: white; margin-bottom: 4px; line-height: 1.3; }
+.project-card.featured .project-name { font-size: 22px; }
+.project-company { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #555; margin-bottom: 16px; }
+.project-desc { font-size: 14px; color: #777; line-height: 1.7; margin-bottom: 20px; }
+.featured-body { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.project-highlights { list-style: none; }
+.project-highlights li { font-size: 13.5px; color: #999; padding: 7px 0; padding-left: 16px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.6; }
+.project-highlights li::before { content: '▸'; position: absolute; left: 0; color: var(--accent-mid); font-size: 10px; top: 9px; }
+.project-highlights li:last-child { border-bottom: none; }
+.role-list { list-style: none; margin-bottom: 20px; }
+.role-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: #999; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.6; }
+.role-list li:last-child { border-bottom: none; }
+.role-icon { font-size: 14px; flex-shrink: 0; line-height: 1.6; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+.tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 5px 11px; border-radius: 5px; font-weight: 600; letter-spacing: 0.3px; }
+.tag:nth-child(6n+1) { background: rgba(45,158,95,0.18); color: #34d37a; border: 1px solid rgba(45,158,95,0.4); }
+.tag:nth-child(6n+2) { background: rgba(59,130,246,0.18); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+.tag:nth-child(6n+3) { background: rgba(245,158,11,0.18); color: #fbbf24; border: 1px solid rgba(245,158,11,0.4); }
+.tag:nth-child(6n+4) { background: rgba(236,72,153,0.18); color: #f472b6; border: 1px solid rgba(236,72,153,0.4); }
+.tag:nth-child(6n+5) { background: rgba(139,92,246,0.18); color: #a78bfa; border: 1px solid rgba(139,92,246,0.4); }
+.tag:nth-child(6n+6) { background: rgba(20,184,166,0.18); color: #2dd4bf; border: 1px solid rgba(20,184,166,0.4); }
+.project-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.project-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--accent-mid); text-decoration: none; padding: 8px 16px; border: 1px solid rgba(45,158,95,0.3); border-radius: 6px; background: rgba(45,158,95,0.06); transition: all 0.15s; }
+.project-link:hover { background: rgba(45,158,95,0.12); border-color: rgba(45,158,95,0.5); color: #4ade80; }
+.project-link.amber { color: #f59e0b; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
+.project-link.amber:hover { background: rgba(245,158,11,0.12); }
+
+/* EXPERIENCE */
+#experience { background: var(--bg); }
+.exp-grid { display: grid; grid-template-columns: 220px 1fr; gap: 0; max-width: 960px; }
+.exp-sidebar { padding-top: 4px; position: relative; }
+.exp-sidebar::after { content: ''; position: absolute; top: 12px; right: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--accent-mid), transparent 85%); opacity: 0.2; }
+.exp-nav-item { padding: 12px 24px 12px 0; cursor: pointer; border-right: 2px solid transparent; transition: all 0.15s; margin-right: -1px; position: relative; z-index: 1; }
+.exp-nav-item.active { border-right-color: var(--accent-mid); }
+.exp-nav-item.active .exp-nav-company { color: var(--accent); }
+.exp-nav-item.active .exp-nav-date { color: var(--accent-mid); }
+.exp-nav-company { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 2px; transition: color 0.15s; }
+.exp-nav-date { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted2); }
+.exp-content { padding-left: 48px; }
+.exp-panel { display: none; }
+.exp-panel.active { display: block; animation: fadeUp 0.25s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.exp-role { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.exp-company-name { font-size: 26px; font-weight: 800; color: var(--dark); letter-spacing: -1px; margin-bottom: 4px; }
+.exp-period { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted2); margin-bottom: 24px; }
+.exp-points { list-style: none; margin-bottom: 20px; }
+.exp-points li { font-size: 15px; color: var(--muted); padding: 9px 0; padding-left: 20px; position: relative; border-bottom: 1px solid var(--border); line-height: 1.6; }
+.exp-points li:last-child { border-bottom: none; }
+.exp-points li::before { content: ''; position: absolute; left: 0; top: 19px; width: 6px; height: 1px; background: var(--accent-mid); }
+.exp-achievement { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--accent-light); border: 1px solid rgba(26,107,60,0.2); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--accent); }
+
+/* CONTACT */
+#contact { background: var(--dark); padding: 100px 60px; }
+.contact-inner { display: flex; justify-content: center; }
+.contact-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; }
+.contact-btn { display: flex; align-items: center; gap: 16px; padding: 20px 28px; text-decoration: none; border-radius: 12px; transition: all 0.15s; }
+.contact-btn.primary { background: white; color: var(--dark); border: 2px solid white; }
+.contact-btn.primary:hover { background: #f5f4f0; transform: translateX(6px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.contact-btn.secondary { background: #1a1917; color: white; border: 1.5px solid #333; }
+.contact-btn.secondary:hover { background: #222; border-color: #555; transform: translateX(6px); }
+.contact-btn-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.contact-btn.primary .contact-btn-icon { background: var(--accent-light); }
+.contact-btn.secondary .contact-btn-icon { background: #2a2924; }
+.contact-btn-text { display: flex; flex-direction: column; gap: 2px; }
+.contact-btn-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.45; }
+.contact-btn-value { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+.contact-btn.primary .contact-btn-value { color: var(--dark); }
+.contact-btn.secondary .contact-btn-value { color: white; }
+
+/* FOOTER */
+footer { background: #0d0d0c; border-top: 1px solid #1e1d1b; padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; }
+footer p { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #444; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav, section, footer { padding-left: 24px; padding-right: 24px; }
+  #hero { grid-template-columns: 1fr; padding-top: 90px; }
+  .hero-right { display: none; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card.featured { grid-column: span 1; }
+  .featured-body { grid-template-columns: 1fr; gap: 0; }
+  .exp-grid { grid-template-columns: 1fr; }
+  .exp-sidebar::after { display: none; }
+  .exp-nav-item { border-right: none; padding: 8px 0; border-bottom: 2px solid transparent; margin-right: 0; }
+  .exp-nav-item.active { border-bottom-color: var(--accent-mid); }
+  .exp-content { padding-left: 0; padding-top: 28px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><div class="nav-dot"></div>Trần Sơn Tùng</div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>Unity Developer · Available</div>
+    <h1 class="hero-name">Trần Sơn Tùng<br><em>Game Developer</em></h1>
+    <div class="hero-title-bar">
+      <div class="hero-divider"></div>
+      <p class="hero-role-text">Unity · C# · Mobile Games</p>
+    </div>
+    <p class="hero-desc">2+ năm phát triển game Casual &amp; Hybrid Casual trên mobile, người hướng tới chất lượng sản phẩm. Định hướng tiếp tục nâng cao tư duy hệ thống, tư duy sản phẩm và tận dụng AI để tạo ra những game ngày càng tốt hơn.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        Xem Projects
+      </a>
+      <a href="#contact" class="btn-secondary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        Liên hệ
+      </a>
+    </div>
+  </div>
+  <div class="hero-right reveal">
+    <div class="stats-card">
+      <div class="stats-card-title">Highlights</div>
+      <div class="stat-row">
+        <div class="stat-icon green">📱</div>
+        <div><div class="stat-value">5M+</div><div class="stat-label">Lượt tải trên Google Play</div></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-icon amber">🏢</div>
+        <div><div class="stat-value">4</div><div class="stat-label">Công ty đã làm việc</div></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-icon gray">⏱️</div>
+        <div><div class="stat-value">36h</div><div class="stat-label">Global Game Jam Sprint 2026</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Featured Work</div>
+    <h2 class="section-title">Dự án <span>nổi bật</span></h2>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card featured reveal">
+      <div class="project-top">
+        <div class="project-index">01 — FEATURED</div>
+        <span class="project-badge badge-amber">5M+ Downloads</span>
+      </div>
+      <div class="project-name">DIY Pixel Art Number ASMR</div>
+      <div class="project-company">NEXCOSMO · 2024</div>
+      <p class="project-desc">Game mobile casual tô màu theo số. Tham gia refactor toàn bộ source, tối ưu hiệu năng và xây dựng tooling nội bộ cho team.</p>
+      <div class="featured-body">
+        <ul class="project-highlights">
+          <li>Custom Editor Tool giảm thao tác lặp khi thêm ảnh và chủ đề cho content team</li>
+          <li>Build Tool cho Creative team, hạn chế số lần build không cần thiết</li>
+          <li>SuperScrollRect tối ưu scroll, loại bỏ giật lag trong danh sách dài</li>
+        </ul>
+        <ul class="project-highlights">
+          <li>SOAP Pattern tách biệt logic Manager ↔ UI, dễ maintain và scale</li>
+          <li>Object Pooling cho particle &amp; ScrollRect, giảm GC pressure</li>
+          <li>Tối ưu dung lượng và giảm draw call cho toàn bộ UI</li>
+        </ul>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Unity</span><span class="tag">C#</span>
+        <span class="tag">SOAP Pattern</span><span class="tag">Object Pooling</span>
+        <span class="tag">Editor Tool</span><span class="tag">SuperScrollRect</span>
+      </div>
+      <div class="project-links">
+        <a href="https://play.google.com/store/apps/details?id=com.ncm.pixel.art.coloring.number" target="_blank" class="project-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div class="project-index">02</div>
+        <span class="project-badge badge-green">From Scratch</span>
+      </div>
+      <div class="project-name">DIY Coloring: Art Number</div>
+      <div class="project-company">NEXAR · 2024–2025</div>
+      <p class="project-desc">Phát triển từ khởi tạo đến phát hành. Hệ thống linh hoạt, điều khiển nội dung từ xa qua Firebase.</p>
+      <ul class="project-highlights">
+        <li>Firebase Remote Config điều khiển layout ảnh, ads, metadata — giảm số lần build đáng kể</li>
+        <li>Observer Pattern cho giao tiếp Manager ↔ UI, decoupled &amp; clean</li>
+        <li>Quản lý version bằng tag build trên GitLab</li>
+        <li>Thiết kế Manager có luồng xử lý rõ ràng, dễ trace bug</li>
+      </ul>
+      <div class="project-tags">
+        <span class="tag">Firebase</span><span class="tag">Remote Config</span>
+        <span class="tag">Observer Pattern</span><span class="tag">GitLab</span>
+      </div>
+      <div class="project-links">
+        <a href="https://play.google.com/store/apps/details?id=com.paint.boom.happy.color.go" target="_blank" class="project-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div class="project-index">03</div>
+        <span class="project-badge badge-purple">Reusable Core</span>
+      </div>
+      <div class="project-name">Bird Screw Puzzle: Color Sort</div>
+      <div class="project-company">NEXAR · 2024–2025</div>
+      <p class="project-desc">Puzzle game. Xây dựng kiến trúc core có khả năng tái sử dụng cho toàn bộ dự án tiếp theo của team.</p>
+      <ul class="project-highlights">
+        <li>Mở rộng thư viện Unity cho GD &amp; Artist lấy level và art từ Figma</li>
+        <li>AudioManager, Observer Pattern, UIManager — reusable cho nhiều project</li>
+      </ul>
+      <div class="project-tags">
+        <span class="tag">Unity</span><span class="tag">Figma Integration</span>
+        <span class="tag">AudioManager</span><span class="tag">UIManager</span>
+      </div>
+      <div class="project-links">
+        <a href="https://apkpure.com/vn/bird-screw-puzzle-color-sort/com.sort.screw.color.jam" target="_blank" class="project-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          APKPure
+        </a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div class="project-index">04 — GAME JAM</div>
+        <span class="project-badge badge-blue">36h Sprint</span>
+      </div>
+      <div class="project-name">Global Game Jam Vietnam 2026</div>
+      <div class="project-company">30/01 – 02/02/2026 · Hà Nội</div>
+      <p class="project-desc">Đảm nhận vai trò <strong style="color:#ccc;">Project Manager</strong> — điều phối toàn bộ đội từ khởi động đến ship trong 36 tiếng.</p>
+      <ul class="role-list">
+        <li><span class="role-icon">🗂️</span>Lên kế hoạch scope, chia task cho từng thành viên ngay từ đầu</li>
+        <li><span class="role-icon">📋</span>Theo dõi tiến độ, unblock bottleneck, điều chỉnh priority liên tục</li>
+        <li><span class="role-icon">🤝</span>Phối hợp Dev, Artist, Designer trong môi trường time-pressure cao</li>
+        <li><span class="role-icon">🤖</span>Dùng AI Beziai agent tăng tốc code và iteration</li>
+        <li><span class="role-icon">✅</span>Ship game đúng deadline 36 tiếng</li>
+      </ul>
+      <div class="project-tags">
+        <span class="tag">Unity</span><span class="tag">Project Management</span>
+        <span class="tag">Team Lead</span><span class="tag">AI-Assisted Dev</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/tungrong102102/GameJam2026.git" target="_blank" class="project-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          GitHub
+        </a>
+        <a href="https://www.facebook.com/reel/1605738960776608" target="_blank" class="project-link amber">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+          Demo Video
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Career</div>
+    <h2 class="section-title">Kinh nghiệm <span>làm việc</span></h2>
+  </div>
+  <div class="exp-grid reveal">
+    <div class="exp-sidebar">
+      <div class="exp-nav-item active" data-panel="kronia">
+        <div class="exp-nav-company">Kronia</div>
+        <div class="exp-nav-date">01/2026 – nay</div>
+      </div>
+      <div class="exp-nav-item" data-panel="nexar">
+        <div class="exp-nav-company">Nexar</div>
+        <div class="exp-nav-date">11/2024 – 10/2025</div>
+      </div>
+      <div class="exp-nav-item" data-panel="nexcosmo">
+        <div class="exp-nav-company">Nexcosmo</div>
+        <div class="exp-nav-date">06/2024 – 11/2024</div>
+      </div>
+      <div class="exp-nav-item" data-panel="neon">
+        <div class="exp-nav-company">Neon Production</div>
+        <div class="exp-nav-date">12/2023 – 05/2024</div>
+      </div>
+    </div>
+    <div class="exp-content">
+      <div class="exp-panel active" id="panel-kronia">
+        <div class="exp-role">Junior Unity Developer</div>
+        <div class="exp-company-name">Kronia Technology</div>
+        <div class="exp-period">01/2026 — Hiện tại</div>
+        <ul class="exp-points">
+          <li>Phát triển dự án xử lý Gameplay, UI, Logic, Ads</li>
+          <li>Tích hợp Firebase, Admob, Applovin</li>
+        </ul>
+      </div>
+      <div class="exp-panel" id="panel-nexar">
+        <div class="exp-role">Fresher Unity Developer</div>
+        <div class="exp-company-name">Nexar Corp</div>
+        <div class="exp-period">11/2024 — 10/2025</div>
+        <ul class="exp-points">
+          <li>Phát triển dự án từ giai đoạn khởi tạo đến phát hành trên store</li>
+          <li>Thiết kế hệ thống gameplay, UI, hiệu ứng, animation theo GDD</li>
+          <li>Xây dựng tool hỗ trợ team Creative, giảm thao tác lặp lại</li>
+          <li>Tối ưu hiệu năng, cải thiện Crashlytics, Retention, Session time</li>
+          <li>Phối hợp với Game Designer và Artist để hoàn thiện sản phẩm</li>
+        </ul>
+        <div class="exp-achievement">🎯 Đảm nhận vai trò PM dự án — kết hợp GD, Artist và Dev</div>
+      </div>
+      <div class="exp-panel" id="panel-nexcosmo">
+        <div class="exp-role">Fresher Unity Developer</div>
+        <div class="exp-company-name">Nexcosmo Corp</div>
+        <div class="exp-period">06/2024 — 11/2024</div>
+        <ul class="exp-points">
+          <li>Refactor và tối ưu source code, cải thiện hiệu năng và độ ổn định</li>
+          <li>Tích hợp Firebase, Admob, Applovin</li>
+          <li>Sửa lỗi, cân bằng gameplay, tối ưu trải nghiệm người chơi</li>
+          <li>Cải thiện chỉ số Crashlytics, Retention và thời gian chơi</li>
+        </ul>
+        <div class="exp-achievement">🏆 Sản phẩm đạt 5 triệu lượt tải trên Google Play</div>
+      </div>
+      <div class="exp-panel" id="panel-neon">
+        <div class="exp-role">Intern Unity Developer</div>
+        <div class="exp-company-name">Neon Production</div>
+        <div class="exp-period">12/2023 — 05/2024</div>
+        <ul class="exp-points">
+          <li>Xử lý logic, di chuyển, animation Spine cho nhân vật</li>
+          <li>Đóng góp ý tưởng cho sản phẩm</li>
+        </ul>
+        <div class="exp-achievement">⚡ Được chính thức hóa sau 2 tháng thử việc</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="contact-actions">
+      <a id="email-btn" href="#" class="contact-btn primary">
+        <div class="contact-btn-icon">📧</div>
+        <div class="contact-btn-text">
+          <span class="contact-btn-label">Email</span>
+          <span class="contact-btn-value" id="email-display">tungst0509&#64;gmail.com</span>
+        </div>
+      </a>
+      <a href="tel:0396839070" class="contact-btn secondary">
+        <div class="contact-btn-icon">📱</div>
+        <div class="contact-btn-text">
+          <span class="contact-btn-label">Phone</span>
+          <span class="contact-btn-value">0396 839 070</span>
+        </div>
+      </a>
+      <a href="https://github.com/tungrong102102" target="_blank" class="contact-btn secondary">
+        <div class="contact-btn-icon">💻</div>
+        <div class="contact-btn-text">
+          <span class="contact-btn-label">GitHub</span>
+          <span class="contact-btn-value">tungrong102102</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Trần Sơn Tùng</p>
+  <p>Unity Developer · Hà Nội, Việt Nam</p>
+</footer>
+
+<script>
+  (function() {
+    var el = document.getElementById('email-btn');
+    var disp = document.getElementById('email-display');
+    if (el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var full = 'tungst0509' + '@' + 'gmail.com';
+        el.href = 'mailto:' + full;
+        disp.textContent = full;
+        window.location.href = 'mailto:' + full;
+      });
+    }
+  })();
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e, i) {
+      if (e.isIntersecting) setTimeout(function(){ e.target.classList.add('visible'); }, i * 60);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
+
+  document.querySelectorAll('.exp-nav-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.exp-nav-item').forEach(function(i){ i.classList.remove('active'); });
+      document.querySelectorAll('.exp-panel').forEach(function(p){ p.classList.remove('active'); });
+      item.classList.add('active');
+      var panel = document.getElementById('panel-' + item.getAttribute('data-panel'));
+      if (panel) panel.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
